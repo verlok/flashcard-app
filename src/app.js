@@ -18,24 +18,12 @@ const store = Redux.createStore(Redux.combineReducers({
     cards // equivalent of cards: cards
 }));
 
-// Watch the store for changes
-store.subscribe(() => {
-    console.log (store.getState());
-});
+// Pure component - props.children takes whatever is inside the <App> tag
+const App = (props) => {
+    return (<div className="app">
+        {props.children}
+    </div>);
+};
 
-// Dispatch an action to the store (which will call the reducer)
-store.dispatch({
-    type: "ADD_CARD",
-    data: {
-        front: "front",
-        back: "back"
-    }
-});
-
-store.dispatch({
-    type: "ADD_CARD",
-    data: {
-        front: "front",
-        back: "back"
-    }
-});
+// Rendering a pure component
+ReactDOM.render(<App>Hello <strong>React</strong></App>, document.getElementById('root'));
