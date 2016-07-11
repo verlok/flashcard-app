@@ -21259,29 +21259,28 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 // Creating a store!
 var store = (0, _redux.createStore)((0, _redux.combineReducers)(reducers));
 
 function run() {
-    var _React$createElement;
-
     // Rendering a pure component
     var state = store.getState();
-    console.log(state);
     _reactDom2.default.render(_react2.default.createElement(
         _App2.default,
         null,
-        _react2.default.createElement(_Sidebar2.default, (_React$createElement = {
-            decks: state.decks, addingDeck: state.addingDeck
-        }, _defineProperty(_React$createElement, 'addingDeck', state.addingDeck), _defineProperty(_React$createElement, 'addDeck', function addDeck(name) {
-            return store.dispatch((0, _actions.addDeck)(name));
-        }), _defineProperty(_React$createElement, 'showAddDeck', function showAddDeck() {
-            return store.dispatch((0, _actions.showAddDeck)());
-        }), _defineProperty(_React$createElement, 'hideAddDeck', function hideAddDeck() {
-            return store.dispatch((0, _actions.hideAddDeck)());
-        }), _React$createElement))
+        _react2.default.createElement(_Sidebar2.default, {
+            decks: state.decks,
+            addingDeck: state.addingDeck,
+            addDeck: function addDeck(name) {
+                return store.dispatch((0, _actions.addDeck)(name));
+            },
+            showAddDeck: function showAddDeck() {
+                return store.dispatch((0, _actions.showAddDeck)());
+            },
+            hideAddDeck: function hideAddDeck() {
+                return store.dispatch((0, _actions.hideAddDeck)());
+            }
+        })
     ), document.getElementById('root'));
 }
 

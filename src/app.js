@@ -12,10 +12,9 @@ const store = createStore(combineReducers(reducers));
 function run() {
     // Rendering a pure component
     let state = store.getState();
-    console.log(state);
     ReactDOM.render(<App>
         <Sidebar
-            decks={state.decks} addingDeck={state.addingDeck}
+            decks={state.decks}
             addingDeck={state.addingDeck}
             addDeck={name => store.dispatch(addDeck(name))}
             showAddDeck={() => store.dispatch(showAddDeck())}
