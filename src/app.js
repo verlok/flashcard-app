@@ -59,17 +59,28 @@ const App = (props) => {
 };
 
 const Sidebar = React.createClass({
+    componentDidUpdate() {
+        const el = ReactDOM.findDOMNode(this.refs.addDeckInput);
+        if (el) el.focus();
+    },
     render() {
         let props = this.props; //just a shortcut
         return (<div className="sidebar">
             <h2>All Decks</h2>
+            <button onClick={ e => this.props.showAddDeck() }>Add Deck</button>
             <ul>
             {props.decks.map((deck, i) =>
                 <li key={i}>{deck.name}</li>
             )}
             </ul>
-            { props.addingDeck && <input ref="add" /> }
+            { props.addingDeck && <input ref="addDeckInput" onKeyPress={this.createDeck} /> }
         </div>)
+    },
+    createDeck(evt) {
+        if (evt.which !== 13) return;
+        var name = ReactDOM.findDOMNode(this.refs.addDeckInput).value;
+        this.props.addDeck(name);
+        this.props.hideAddDeck();
     }
 });
 
@@ -78,15 +89,16 @@ function run() {
     let state = store.getState();
     console.log(state);
     ReactDOM.render(<App>
-        <Sidebar decks={state.decks} addingDeck={state.addingDeck} />
+        <Sidebar
+            decks={state.decks} addingDeck={state.addingDeck}
+            addingDeck={state.addingDeck}
+            addDeck={name => store.dispatch(addDeck(name))}
+            showAddDeck={() => store.dispatch(showAddDeck())}
+            hideAddDeck={() => store.dispatch(hideAddDeck())}
+            />
     </App>, document.getElementById('root'));
 }
 
 // First run + subscribe to store change
 run();
 store.subscribe(run);
-
-// Global functions just to test the reducers
-window.show = () => store.dispatch(showAddDeck());
-window.hide = () => store.dispatch(hideAddDeck());
-window.add = () => store.dispatch(addDeck(new Date().toString()));
