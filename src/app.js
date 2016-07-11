@@ -25,5 +25,22 @@ const App = (props) => {
     </div>);
 };
 
+const Sidebar = React.createClass({
+    render() {
+        let props = this.props; //just a shortcut
+        return (<div className="sidebar">
+            <h2>All Decks</h2>
+            <ul>
+            {props.decks.map((deck, i) =>
+                <li key={i}>{deck.name}</li>
+            )}
+            </ul>
+            { props.addingDeck && <input ref="add" /> }
+        </div>)
+    }
+});
+
 // Rendering a pure component
-ReactDOM.render(<App>Hello <strong>React</strong></App>, document.getElementById('root'));
+ReactDOM.render(<App>
+    <Sidebar decks={[ {name: "Deck 1"} ]} addingDeck={false} />
+</App>, document.getElementById('root'));
