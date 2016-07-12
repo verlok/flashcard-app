@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import {addDeck, showAddDeck, hideAddDeck} from '../actions';
 
-const mapStateToProps = ({decks, addingDeck}) => ({
+const mapStateToProps = ({decks, isAddingDeck}) => ({
     decks,
-    addingDeck
+    isAddingDeck
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -29,7 +29,7 @@ const Sidebar = React.createClass({
                     <li key={i}>{deck.name}</li>
                 )}
             </ul>
-            { props.addingDeck && <input ref="addDeckInput" onKeyPress={this.createDeck}/> }
+            { props.isAddingDeck && <input ref="addDeckInput" onKeyPress={this.createDeck}/> }
         </div>)
     },
     createDeck(evt) {

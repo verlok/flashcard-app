@@ -25,7 +25,7 @@ export const decks = (state, action) => {
 };
 
 // Sub-reducer for showing or hiding decks
-export const addingDeck = (state, action) => {
+export const isAddingDeck = (state, action) => {
     switch (action.type) {
         case "SHOW_ADD_DECK": return true;
         case "HIDE_ADD_DECK": return false;
