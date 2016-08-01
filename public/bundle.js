@@ -27568,12 +27568,14 @@ var _Sidebar2 = _interopRequireDefault(_Sidebar);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Pure component - props.children takes whatever is inside the <App> tag
-var App = function App(props) {
+var App = function App(_ref) {
+    var children = _ref.children;
+
     return _react2.default.createElement(
         "div",
         { className: "app" },
         _react2.default.createElement(_Sidebar2.default, null),
-        props.children
+        children
     );
 };
 
