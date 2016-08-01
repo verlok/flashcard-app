@@ -27573,23 +27573,39 @@ var _Sidebar = require("./Sidebar");
 
 var _Sidebar2 = _interopRequireDefault(_Sidebar);
 
+var _reactRedux = require("react-redux");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// Pure component - props.children takes whatever is inside the <App> tag
-var App = function App(_ref) {
-    var children = _ref.children;
+// The 2nd parameter of mapStateToProps is the router object (when using a router)
+var mapStateToProps = function mapStateToProps(props, _ref) {
+    var deckId = _ref.params.deckId;
+    return {
+        deckId: deckId
+    };
+};
+
+var App = function App(_ref2) {
+    var deckId = _ref2.deckId;
+    var children = _ref2.children;
 
     return _react2.default.createElement(
         "div",
         { className: "app" },
         _react2.default.createElement(_Sidebar2.default, null),
+        _react2.default.createElement(
+            "h1",
+            null,
+            "Deck ",
+            deckId
+        ),
         children
     );
 };
 
-exports.default = App;
+exports.default = (0, _reactRedux.connect)(mapStateToProps)(App);
 
-},{"./Sidebar":268,"react":251}],268:[function(require,module,exports){
+},{"./Sidebar":268,"react":251,"react-redux":5}],268:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
