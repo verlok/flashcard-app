@@ -8,9 +8,9 @@ const mapStateToProps = (props, { params: {deckId} } ) => ({
     deckId
 });
 
-const App = ({children}) => {
+const App = ({deckId, children}) => {
     return (<div className="app">
-        <Toolbar />
+        <Toolbar deckId={deckId} />
         <Sidebar />        
         {children}
     </div>);

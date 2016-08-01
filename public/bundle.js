@@ -27594,12 +27594,13 @@ var mapStateToProps = function mapStateToProps(props, _ref) {
 };
 
 var App = function App(_ref2) {
+    var deckId = _ref2.deckId;
     var children = _ref2.children;
 
     return _react2.default.createElement(
         "div",
         { className: "app" },
-        _react2.default.createElement(_Toolbar2.default, null),
+        _react2.default.createElement(_Toolbar2.default, { deckId: deckId }),
         _react2.default.createElement(_Sidebar2.default, null),
         children
     );
@@ -27725,8 +27726,23 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 };
 
 var Toolbar = function Toolbar(_ref) {
+	var deckId = _ref.deckId;
 	var showAddDeck = _ref.showAddDeck;
 
+	var deckTools = deckId ? _react2.default.createElement(
+		'div',
+		null,
+		_react2.default.createElement(
+			_reactRouter.Link,
+			{ className: 'btn', to: '/deck/' + deckId + '/new' },
+			'✚ New Card'
+		),
+		_react2.default.createElement(
+			_reactRouter.Link,
+			{ className: 'btn', to: '/deck/' + deckId + '/study' },
+			'Study Deck'
+		)
+	) : null;
 	return _react2.default.createElement(
 		'div',
 		{ className: 'toolbar' },
@@ -27738,7 +27754,8 @@ var Toolbar = function Toolbar(_ref) {
 				{ onClick: showAddDeck },
 				'✚ New Deck'
 			)
-		)
+		),
+		deckTools
 	);
 };
 
