@@ -27604,6 +27604,8 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
+var _reactRouter = require('react-router');
+
 var _reactRedux = require('react-redux');
 
 var _actions = require('../actions');
@@ -27665,7 +27667,11 @@ var Sidebar = _react2.default.createClass({
                     return _react2.default.createElement(
                         'li',
                         { key: i },
-                        deck.name
+                        _react2.default.createElement(
+                            _reactRouter.Link,
+                            { to: '/deck/' + deck.id },
+                            deck.name
+                        )
                     );
                 })
             ),
@@ -27682,7 +27688,7 @@ var Sidebar = _react2.default.createClass({
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Sidebar);
 
-},{"../actions":265,"react":251,"react-dom":2,"react-redux":5}],269:[function(require,module,exports){
+},{"../actions":265,"react":251,"react-dom":2,"react-redux":5,"react-router":50}],269:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
