@@ -8,6 +8,7 @@ import * as reducers from './reducers';
 reducers.routing = routerReducer;
 import App from './components/App';
 import VisibleCards from './components/VisibleCards';
+import NewCardModal from './components/NewCardModal';
 import * as localStore from './localStore';
 
 // Creating a store!
@@ -19,7 +20,9 @@ function run() {
     ReactDOM.render(<Provider store={store}>
         <Router history={history}>
             <Route path="/" component={App}>
-                <Route path="/deck/:deckId" component={VisibleCards}/>
+                <Route path="/deck/:deckId" component={VisibleCards}>
+                    <Route path="/deck/:deckId/new" component={NewCardModal} />
+                </Route>
             </Route>
         </Router>
     </Provider>, document.getElementById('root'));
