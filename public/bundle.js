@@ -28016,6 +28016,9 @@ reducers.routing = _reactRouterRedux.routerReducer;
 var store = (0, _redux.createStore)((0, _redux.combineReducers)(reducers), (0, _redux.applyMiddleware)(_reduxThunk2.default));
 var history = (0, _reactRouterRedux.syncHistoryWithStore)(_reactRouter.browserHistory, store);
 
+// Keep track of previously saved data, to minimize save requests
+var previousSave;
+
 function run() {
     _reactDom2.default.render(_react2.default.createElement(
         _reactRedux.Provider,
@@ -28038,27 +28041,34 @@ function run() {
     ), document.getElementById('root'));
 }
 
-function save() {
-    var state = store.getState();
-    // TODO: Save only if decks or cards changed!
+function save(dataToSave) {
     fetch('/api/data', {
         method: "POST",
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-            decks: state.decks,
-            cards: state.cards
-        })
+        body: dataToSave
+    }).then(function () {
+        previousSave = dataToSave;
     });
+}
+
+function checkThenSave() {
+    var state = store.getState();
+    var dataToSave = JSON.stringify({
+        decks: state.decks,
+        cards: state.cards
+    });
+    // Prevent from saving every single time the store changes
+    if (previousSave !== dataToSave) save(dataToSave);
 }
 
 // First run + subscribe to store change
 function init() {
     run();
     store.subscribe(run);
-    store.subscribe(save);
+    store.subscribe(checkThenSave);
     store.dispatch((0, _actions.fetchData)());
 }
 
