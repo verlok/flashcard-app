@@ -1,15 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {createStore, combineReducers} from 'redux';
+import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 // Routing stuff
 import {Router, Route, browserHistory} from 'react-router';
 import {syncHistoryWithStore, routerReducer} from 'react-router-redux';
-// Local store script to emulate DB
-import * as localStore from './localStore';
+// Thunks, to do async calls to a remote API
+import thunkMiddleware from "redux-thunk";
 // Reducers + routing reducer
 import * as reducers from './reducers';
 reducers.routing = routerReducer;
+// Actions
+import {fetchData} from "./actions";
 // Components
 import App from './components/App';
 import VisibleCards from './components/VisibleCards';
@@ -18,11 +20,10 @@ import EditCardModal from './components/EditCardModal';
 import StudyModal from './components/StudyModal';
 
 // Create the store and sync history with store
-const store = createStore(combineReducers(reducers), localStore.get());
+const store = createStore(combineReducers(reducers), applyMiddleware(thunkMiddleware));
 const history = syncHistoryWithStore(browserHistory, store);
 
 function run() {
-    localStore.set(store.getState(), ['decks', 'cards']);
     ReactDOM.render(<Provider store={store}>
         <Router history={history}>
             <Route path="/" component={App}>
@@ -36,6 +37,28 @@ function run() {
     </Provider>, document.getElementById('root'));
 }
 
+function save() {
+    var state = store.getState();
+    // TODO: Save only if decks or cards changed!
+    fetch('/api/data', {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            decks: state.decks,
+            cards: state.cards
+        })
+    });
+}
+
 // First run + subscribe to store change
-run();
-store.subscribe(run);
+function init() {
+    run();
+    store.subscribe(run);
+    store.subscribe(save);
+    store.dispatch(fetchData());
+}
+
+init();

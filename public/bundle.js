@@ -763,7 +763,7 @@ function wrapActionCreators(actionCreators) {
     return (0, _redux.bindActionCreators)(actionCreators, dispatch);
   };
 }
-},{"redux":263}],11:[function(require,module,exports){
+},{"redux":264}],11:[function(require,module,exports){
 /**
  * Copyright 2015, Yahoo! Inc.
  * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
@@ -27222,6 +27222,30 @@ module.exports = require('./lib/React');
 'use strict';
 
 exports.__esModule = true;
+function createThunkMiddleware(extraArgument) {
+  return function (_ref) {
+    var dispatch = _ref.dispatch;
+    var getState = _ref.getState;
+    return function (next) {
+      return function (action) {
+        if (typeof action === 'function') {
+          return action(dispatch, getState, extraArgument);
+        }
+
+        return next(action);
+      };
+    };
+  };
+}
+
+var thunk = createThunkMiddleware();
+thunk.withExtraArgument = createThunkMiddleware;
+
+exports['default'] = thunk;
+},{}],259:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -27277,7 +27301,7 @@ function applyMiddleware() {
     };
   };
 }
-},{"./compose":261}],259:[function(require,module,exports){
+},{"./compose":262}],260:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -27329,7 +27353,7 @@ function bindActionCreators(actionCreators, dispatch) {
   }
   return boundActionCreators;
 }
-},{}],260:[function(require,module,exports){
+},{}],261:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -27459,7 +27483,7 @@ function combineReducers(reducers) {
   };
 }
 }).call(this,require('_process'))
-},{"./createStore":262,"./utils/warning":264,"_process":1,"lodash/isPlainObject":269}],261:[function(require,module,exports){
+},{"./createStore":263,"./utils/warning":265,"_process":1,"lodash/isPlainObject":270}],262:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -27500,7 +27524,7 @@ function compose() {
     if (typeof _ret === "object") return _ret.v;
   }
 }
-},{}],262:[function(require,module,exports){
+},{}],263:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -27763,7 +27787,7 @@ function createStore(reducer, initialState, enhancer) {
     replaceReducer: replaceReducer
   }, _ref2[_symbolObservable2["default"]] = observable, _ref2;
 }
-},{"lodash/isPlainObject":269,"symbol-observable":270}],263:[function(require,module,exports){
+},{"lodash/isPlainObject":270,"symbol-observable":271}],264:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -27812,7 +27836,7 @@ exports.bindActionCreators = _bindActionCreators2["default"];
 exports.applyMiddleware = _applyMiddleware2["default"];
 exports.compose = _compose2["default"];
 }).call(this,require('_process'))
-},{"./applyMiddleware":258,"./bindActionCreators":259,"./combineReducers":260,"./compose":261,"./createStore":262,"./utils/warning":264,"_process":1}],264:[function(require,module,exports){
+},{"./applyMiddleware":259,"./bindActionCreators":260,"./combineReducers":261,"./compose":262,"./createStore":263,"./utils/warning":265,"_process":1}],265:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -27838,17 +27862,17 @@ function warning(message) {
   } catch (e) {}
   /* eslint-enable no-empty */
 }
-},{}],265:[function(require,module,exports){
+},{}],266:[function(require,module,exports){
 arguments[4][13][0].apply(exports,arguments)
-},{"./_overArg":267,"dup":13}],266:[function(require,module,exports){
+},{"./_overArg":268,"dup":13}],267:[function(require,module,exports){
 arguments[4][14][0].apply(exports,arguments)
-},{"dup":14}],267:[function(require,module,exports){
+},{"dup":14}],268:[function(require,module,exports){
 arguments[4][15][0].apply(exports,arguments)
-},{"dup":15}],268:[function(require,module,exports){
+},{"dup":15}],269:[function(require,module,exports){
 arguments[4][16][0].apply(exports,arguments)
-},{"dup":16}],269:[function(require,module,exports){
+},{"dup":16}],270:[function(require,module,exports){
 arguments[4][17][0].apply(exports,arguments)
-},{"./_getPrototype":265,"./_isHostObject":266,"./isObjectLike":268,"dup":17}],270:[function(require,module,exports){
+},{"./_getPrototype":266,"./_isHostObject":267,"./isObjectLike":269,"dup":17}],271:[function(require,module,exports){
 (function (global){
 /* global window */
 'use strict';
@@ -27856,7 +27880,7 @@ arguments[4][17][0].apply(exports,arguments)
 module.exports = require('./ponyfill')(global || window || this);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./ponyfill":271}],271:[function(require,module,exports){
+},{"./ponyfill":272}],272:[function(require,module,exports){
 'use strict';
 
 module.exports = function symbolObservablePonyfill(root) {
@@ -27877,42 +27901,54 @@ module.exports = function symbolObservablePonyfill(root) {
 	return result;
 };
 
-},{}],272:[function(require,module,exports){
+},{}],273:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 // Action creators - functions that just return an action object
-var addDeck = exports.addDeck = function addDeck(name) {
-  return { type: "ADD_DECK", data: name };
-};
 var showAddDeck = exports.showAddDeck = function showAddDeck() {
-  return { type: "SHOW_ADD_DECK" };
+    return { type: "SHOW_ADD_DECK" };
 };
 var hideAddDeck = exports.hideAddDeck = function hideAddDeck() {
-  return { type: "HIDE_ADD_DECK" };
+    return { type: "HIDE_ADD_DECK" };
 };
-
+var addDeck = exports.addDeck = function addDeck(name) {
+    return { type: "ADD_DECK", data: name };
+};
 var addCard = exports.addCard = function addCard(card) {
-  return { type: "ADD_CARD", data: card };
+    return { type: "ADD_CARD", data: card };
 };
 var updateCard = exports.updateCard = function updateCard(card) {
-  return { type: "UPDATE_CARD", data: card };
+    return { type: "UPDATE_CARD", data: card };
 };
 var deleteCard = exports.deleteCard = function deleteCard(cardId) {
-  return { type: "DELETE_CARD", data: cardId };
+    return { type: "DELETE_CARD", data: cardId };
 };
-
 var filterCards = exports.filterCards = function filterCards(query) {
-  return { type: "FILTER_CARDS", data: query };
+    return { type: "FILTER_CARDS", data: query };
 };
-
 var setShowBack = exports.setShowBack = function setShowBack(showBack) {
-  return { type: "SHOW_BACK", data: showBack };
+    return { type: "SHOW_BACK", data: showBack };
+};
+var receiveData = exports.receiveData = function receiveData(data) {
+    return { type: "RECEIVE_DATA", data: data };
 };
 
-},{}],273:[function(require,module,exports){
+var fetchData = exports.fetchData = function fetchData() {
+    return function (dispatch) {
+        //dispatch(startedCall()); TODO
+        fetch("/api/data").then(function (res) {
+            return res.json();
+        }).then(function (json) {
+            return dispatch(receiveData(json));
+        });
+        //.catch(err => dispatch(failedRequest(err))); TODO
+    };
+};
+
+},{}],274:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -27931,13 +27967,15 @@ var _reactRouter = require('react-router');
 
 var _reactRouterRedux = require('react-router-redux');
 
-var _localStore = require('./localStore');
+var _reduxThunk = require('redux-thunk');
 
-var localStore = _interopRequireWildcard(_localStore);
+var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
 var _reducers = require('./reducers');
 
 var reducers = _interopRequireWildcard(_reducers);
+
+var _actions = require('./actions');
 
 var _App = require('./components/App');
 
@@ -27963,21 +28001,22 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// Local store script to emulate DB
+// Thunks, to do async calls to a remote API
 
 // Routing stuff
 reducers.routing = _reactRouterRedux.routerReducer;
-// Components
+// Actions
 
 // Reducers + routing reducer
 
+// Components
+
 
 // Create the store and sync history with store
-var store = (0, _redux.createStore)((0, _redux.combineReducers)(reducers), localStore.get());
+var store = (0, _redux.createStore)((0, _redux.combineReducers)(reducers), (0, _redux.applyMiddleware)(_reduxThunk2.default));
 var history = (0, _reactRouterRedux.syncHistoryWithStore)(_reactRouter.browserHistory, store);
 
 function run() {
-    localStore.set(store.getState(), ['decks', 'cards']);
     _reactDom2.default.render(_react2.default.createElement(
         _reactRedux.Provider,
         { store: store },
@@ -27999,11 +28038,33 @@ function run() {
     ), document.getElementById('root'));
 }
 
-// First run + subscribe to store change
-run();
-store.subscribe(run);
+function save() {
+    var state = store.getState();
+    // TODO: Save only if decks or cards changed!
+    fetch('/api/data', {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            decks: state.decks,
+            cards: state.cards
+        })
+    });
+}
 
-},{"./components/App":274,"./components/EditCardModal":277,"./components/NewCardModal":278,"./components/StudyModal":280,"./components/VisibleCards":282,"./localStore":283,"./reducers":284,"react":257,"react-dom":3,"react-redux":6,"react-router":52,"react-router-redux":19,"redux":263}],274:[function(require,module,exports){
+// First run + subscribe to store change
+function init() {
+    run();
+    store.subscribe(run);
+    store.subscribe(save);
+    store.dispatch((0, _actions.fetchData)());
+}
+
+init();
+
+},{"./actions":273,"./components/App":275,"./components/EditCardModal":278,"./components/NewCardModal":279,"./components/StudyModal":281,"./components/VisibleCards":283,"./reducers":284,"react":257,"react-dom":3,"react-redux":6,"react-router":52,"react-router-redux":19,"redux":264,"redux-thunk":258}],275:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28049,7 +28110,7 @@ var App = function App(_ref2) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps)(App);
 
-},{"./Sidebar":279,"./Toolbar":281,"react":257,"react-redux":6}],275:[function(require,module,exports){
+},{"./Sidebar":280,"./Toolbar":282,"react":257,"react-redux":6}],276:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28090,7 +28151,7 @@ var Card = function Card(_ref) {
 
 exports.default = Card;
 
-},{"react":257,"react-router":52}],276:[function(require,module,exports){
+},{"react":257,"react-router":52}],277:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28179,7 +28240,7 @@ var CardModal = _react2.default.createClass({
 
 exports.default = CardModal;
 
-},{"react":257,"react-dom":3,"react-router":52}],277:[function(require,module,exports){
+},{"react":257,"react-dom":3,"react-router":52}],278:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28219,7 +28280,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_CardModal2.default);
 
-},{"../actions":272,"./CardModal":276,"react-redux":6}],278:[function(require,module,exports){
+},{"../actions":273,"./CardModal":277,"react-redux":6}],279:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28253,7 +28314,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_CardModal2.default);
 
-},{"../actions":272,"./CardModal":276,"react-redux":6}],279:[function(require,module,exports){
+},{"../actions":273,"./CardModal":277,"react-redux":6}],280:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28343,7 +28404,7 @@ var Sidebar = _react2.default.createClass({
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Sidebar);
 
-},{"../actions":272,"react":257,"react-dom":3,"react-redux":6,"react-router":52}],280:[function(require,module,exports){
+},{"../actions":273,"react":257,"react-dom":3,"react-redux":6,"react-router":52}],281:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28489,7 +28550,7 @@ var StudyModal = function StudyModal(_ref3) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(StudyModal);
 
-},{"../actions":272,"react":257,"react-redux":6,"react-router":52}],281:[function(require,module,exports){
+},{"../actions":273,"react":257,"react-redux":6,"react-router":52}],282:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28563,7 +28624,7 @@ var Toolbar = function Toolbar(_ref) {
 
 exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(Toolbar);
 
-},{"../actions":272,"react":257,"react-redux":6,"react-router":52}],282:[function(require,module,exports){
+},{"../actions":273,"react":257,"react-redux":6,"react-router":52}],283:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28625,24 +28686,7 @@ var Cards = function Cards(_ref4) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps)(Cards);
 
-},{"./Card":275,"fuzzysearch":2,"react":257,"react-redux":6}],283:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-var get = exports.get = function get() {
-	return JSON.parse(localStorage.getItem('state')) || undefined;
-};
-var set = exports.set = function set(state, props) {
-	var toSave = {};
-	props.forEach(function (p) {
-		return toSave[p] = state[p];
-	});
-	localStorage.setItem('state', JSON.stringify(toSave));
-};
-
-},{}],284:[function(require,module,exports){
+},{"./Card":276,"fuzzysearch":2,"react":257,"react-redux":6}],284:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28676,6 +28720,10 @@ var cardFilter = exports.cardFilter = function cardFilter(state, action) {
 var cards = exports.cards = function cards(state, action) {
     var _ret = function () {
         switch (action.type) {
+            case "RECEIVE_DATA":
+                return {
+                    v: action.data.cards || state
+                };
             case "ADD_CARD":
                 var newCard = Object.assign({}, action.data, {
                     score: 1,
@@ -28710,6 +28758,8 @@ var cards = exports.cards = function cards(state, action) {
 // Sub-reducer for decks
 var decks = exports.decks = function decks(state, action) {
     switch (action.type) {
+        case "RECEIVE_DATA":
+            return action.data.decks || state;
         case "ADD_DECK":
             var newDeck = { name: action.data, id: +new Date() };
             return state.concat([newDeck]);
@@ -28730,4 +28780,4 @@ var isAddingDeck = exports.isAddingDeck = function isAddingDeck(state, action) {
     }
 };
 
-},{}]},{},[273]);
+},{}]},{},[274]);
