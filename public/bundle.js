@@ -28092,16 +28092,16 @@ var CardModal = _react2.default.createClass({
             ),
             _react2.default.createElement(
                 "label",
-                null,
+                { htmlFor: "cardModalFront" },
                 "Card Front:"
             ),
-            _react2.default.createElement("textarea", { ref: "front", defaultValue: card.front }),
+            _react2.default.createElement("textarea", { id: "cardModalFront", ref: "front", defaultValue: card.front }),
             _react2.default.createElement(
                 "label",
-                null,
+                { htmlFor: "cardModalBack" },
                 "Card Back:"
             ),
-            _react2.default.createElement("textarea", { ref: "back", defaultValue: card.back }),
+            _react2.default.createElement("textarea", { id: "cardModalBack", ref: "back", defaultValue: card.back }),
             _react2.default.createElement(
                 "p",
                 null,

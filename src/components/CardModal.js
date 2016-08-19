@@ -11,10 +11,10 @@ const CardModal = React.createClass({
 
         return (<div className="modal">
             <h1>{onDelete ? "Edit" : "New"} Card</h1>
-            <label>Card Front:</label>
-            <textarea ref="front" defaultValue={card.front}></textarea>
-            <label>Card Back:</label>
-            <textarea ref="back" defaultValue={card.back}></textarea>
+            <label htmlFor="cardModalFront">Card Front:</label>
+            <textarea id="cardModalFront" ref="front" defaultValue={card.front}></textarea>
+            <label htmlFor="cardModalBack">Card Back:</label>
+            <textarea id="cardModalBack" ref="back" defaultValue={card.back}></textarea>
             <p>
                 <button onClick={this.onSave}>Save Card</button>
                 <Link className="btn" to={`/deck/${card.deckId}`}>Cancel</Link>
@@ -22,7 +22,7 @@ const CardModal = React.createClass({
                     <button onClick={this.onDelete} className="delete">Delete Card</button> :
                     null }
             </p>
-        </div>)
+        </div>);
     },
     onSave(e) {
         var front = ReactDOM.findDOMNode(this.refs.front).value;
