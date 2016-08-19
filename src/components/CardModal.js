@@ -25,15 +25,6 @@ const CardModal = React.createClass({
         </div>)
     },
     onSave(e) {
-        /*
-        var front = ReactDOM.findDOMNode(this.refs.front);
-        var back = ReactDOM.findDOMNode(this.refs.back);
-        this.props.onSave(Object.assign({}, this.props.card, {
-            front: front.value,
-            back: back.value
-        }));
-        browserHistory.push(`/deck/${this.props.card.deckId}`);
-        */
         var front = ReactDOM.findDOMNode(this.refs.front).value;
         var back = ReactDOM.findDOMNode(this.refs.back).value;
         this.props.onSave(Object.assign({}, this.props.card, {
