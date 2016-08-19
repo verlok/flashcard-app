@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router";
 
+// Destructuring from props, so props.card
 const Card = ({ card }) => {
     return (<div className="card">
         <div>

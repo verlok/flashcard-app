@@ -1,7 +1,8 @@
 import React from "react";
-import Card from "./Card"; 
+import Card from "./Card";
 import { connect } from "react-redux";
 
+// First argument is state.cards, second is router.params.deckId
 const mapStateToProps = ({cards}, {params: {deckId}}) => ({
     cards: cards.filter(c => c.deckId === deckId)
 });

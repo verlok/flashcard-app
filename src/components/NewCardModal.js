@@ -1,6 +1,6 @@
-import CardModal from "./CardModal";
 import {connect} from "react-redux";
 import {addCard} from "../actions";
+import CardModal from "./CardModal";
 
 const mapStateToProps = (props, { params: { deckId }}) => ({
     card: {deckId}
