@@ -28072,7 +28072,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var CardModal = _react2.default.createClass({
     displayName: "CardModal",
-    componentDidUpdate: function componentDidUpdate() {
+    componentDidMount: function componentDidMount() {
         _reactDom2.default.findDOMNode(this.refs.front).focus();
     },
     render: function render() {

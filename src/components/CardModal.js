@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import {Link, browserHistory} from "react-router";
 
 const CardModal = React.createClass({
-    componentDidUpdate() {
+    componentDidMount() {
         ReactDOM.findDOMNode(this.refs.front).focus();
     },
     render() {
