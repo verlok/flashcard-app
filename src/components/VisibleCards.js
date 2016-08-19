@@ -8,7 +8,7 @@ const mapStateToProps = ({cards}, {params: {deckId}}) => ({
 });
 
 const Cards = ({cards, children}) => {
-    return (<div>
+    return (<div className="main">
         {cards.map(card => <Card card={card} key={card.id} />)}
         {children}
     </div>);

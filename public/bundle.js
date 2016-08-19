@@ -28412,7 +28412,7 @@ var Cards = function Cards(_ref3) {
 
     return _react2.default.createElement(
         "div",
-        null,
+        { className: "main" },
         cards.map(function (card) {
             return _react2.default.createElement(_Card2.default, { card: card, key: card.id });
         }),
