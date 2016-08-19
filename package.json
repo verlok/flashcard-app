@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "watchify src/app.js -o public/bundle.js -t [ babelify --presets [ react es2015 ] ]",
-    "server": "cd public; live-server --port=1234 --entry-file=index.html"
+    "liveServer": "cd public; live-server --port=1234 --entry-file=index.html",
+    "server": "node server.js"
   },
   "keywords": [],
   "author": "",
