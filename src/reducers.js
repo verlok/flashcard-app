@@ -1,6 +1,17 @@
+// These are reducers - they take an action and change the state
+
+// Sub-reducer for card filter
+export const cardFilter = (state, action) => {
+    switch (action.type) {
+        case "FILTER_CARDS":
+            return action.data;
+        default:
+            return state || "";
+    }
+};
+
 // Sub-reducer for cards
 export const cards = (state, action) => {
-    // this is a reducer - it takes an action and change the state
     switch (action.type) {
         case "ADD_CARD":
             let newCard = Object.assign({}, action.data, {
