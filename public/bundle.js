@@ -28431,25 +28431,32 @@ var _fuzzysearch2 = _interopRequireDefault(_fuzzysearch);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var matches = function matches(filter, card) {
-    return (0, _fuzzysearch2.default)(filter, card.front) || (0, _fuzzysearch2.default)(filter, card.back);
+var matches = function matches(filter, _ref) {
+    var front = _ref.front;
+    var back = _ref.back;
+
+    return (0, _fuzzysearch2.default)(filter, front) || (0, _fuzzysearch2.default)(filter, back);
 };
 
 // First argument is state.cards, second is router.params.deckId
-var mapStateToProps = function mapStateToProps(_ref, _ref2) {
-    var cards = _ref.cards;
-    var cardFilter = _ref.cardFilter;
-    var deckId = _ref2.params.deckId;
+var mapStateToProps = function mapStateToProps(_ref2, _ref3) {
+    var cards = _ref2.cards;
+    var cardFilter = _ref2.cardFilter;
+    var deckId = _ref3.params.deckId;
+
+    var lowerFilter = cardFilter.toLowerCase();
     return {
         cards: cards.filter(function (card) {
-            return card.deckId === deckId && matches(cardFilter, card);
+            var front = card.front.toLowerCase();
+            var back = card.back.toLowerCase();
+            return card.deckId === deckId && matches(lowerFilter, { front: front, back: back });
         })
     };
 };
 
-var Cards = function Cards(_ref3) {
-    var cards = _ref3.cards;
-    var children = _ref3.children;
+var Cards = function Cards(_ref4) {
+    var cards = _ref4.cards;
+    var children = _ref4.children;
 
     return _react2.default.createElement(
         "div",
