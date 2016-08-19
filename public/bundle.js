@@ -27908,6 +27908,10 @@ var filterCards = exports.filterCards = function filterCards(query) {
   return { type: "FILTER_CARDS", data: query };
 };
 
+var setShowBack = exports.setShowBack = function setShowBack(showBack) {
+  return { type: "SHOW_BACK", data: showBack };
+};
+
 },{}],273:[function(require,module,exports){
 'use strict';
 
@@ -27951,6 +27955,10 @@ var _EditCardModal = require('./components/EditCardModal');
 
 var _EditCardModal2 = _interopRequireDefault(_EditCardModal);
 
+var _StudyModal = require('./components/StudyModal');
+
+var _StudyModal2 = _interopRequireDefault(_StudyModal);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -27983,7 +27991,8 @@ function run() {
                     _reactRouter.Route,
                     { path: '/deck/:deckId', component: _VisibleCards2.default },
                     _react2.default.createElement(_reactRouter.Route, { path: '/deck/:deckId/new', component: _NewCardModal2.default }),
-                    _react2.default.createElement(_reactRouter.Route, { path: '/deck/:deckId/edit/:cardId', component: _EditCardModal2.default })
+                    _react2.default.createElement(_reactRouter.Route, { path: '/deck/:deckId/edit/:cardId', component: _EditCardModal2.default }),
+                    _react2.default.createElement(_reactRouter.Route, { path: '/deck/:deckId/study', component: _StudyModal2.default })
                 )
             )
         )
@@ -27994,7 +28003,7 @@ function run() {
 run();
 store.subscribe(run);
 
-},{"./components/App":274,"./components/EditCardModal":277,"./components/NewCardModal":278,"./components/VisibleCards":281,"./localStore":282,"./reducers":283,"react":257,"react-dom":3,"react-redux":6,"react-router":52,"react-router-redux":19,"redux":263}],274:[function(require,module,exports){
+},{"./components/App":274,"./components/EditCardModal":277,"./components/NewCardModal":278,"./components/StudyModal":280,"./components/VisibleCards":282,"./localStore":283,"./reducers":284,"react":257,"react-dom":3,"react-redux":6,"react-router":52,"react-router-redux":19,"redux":263}],274:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28040,7 +28049,7 @@ var App = function App(_ref2) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps)(App);
 
-},{"./Sidebar":279,"./Toolbar":280,"react":257,"react-redux":6}],275:[function(require,module,exports){
+},{"./Sidebar":279,"./Toolbar":281,"react":257,"react-redux":6}],275:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28335,6 +28344,152 @@ var Sidebar = _react2.default.createClass({
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Sidebar);
 
 },{"../actions":272,"react":257,"react-dom":3,"react-redux":6,"react-router":52}],280:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouter = require("react-router");
+
+var _reactRedux = require("react-redux");
+
+var _actions = require("../actions");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var MS_ID_DAY = 86400000;
+
+var mapStateToProps = function mapStateToProps(_ref, _ref2) {
+    var cards = _ref.cards;
+    var showBack = _ref.showBack;
+    var deckId = _ref2.params.deckId;
+    return {
+        showBack: showBack,
+        deckId: deckId,
+        card: cards.filter(function (card) {
+            return card.deckId === deckId && (!card.lastStudiedOn || (new Date() - card.lastStudiedOn) / MS_ID_DAY >= card.score);
+        })[0]
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        onStudied: function onStudied(cardId, score) {
+            var now = new Date();
+            now.setHours(0, 0, 0, 0);
+            dispatch((0, _actions.updateCard)({ id: cardId, score: score, lastStudiedOn: +now }));
+            dispatch((0, _actions.setShowBack)());
+        },
+        onFlip: function onFlip() {
+            return dispatch((0, _actions.setShowBack)(true));
+        }
+    };
+};
+
+var StudyModal = function StudyModal(_ref3) {
+    var card = _ref3.card;
+    var showBack = _ref3.showBack;
+    var onFlip = _ref3.onFlip;
+    var deckId = _ref3.deckId;
+    var onStudied = _ref3.onStudied;
+
+    var body = _react2.default.createElement(
+        "div",
+        { className: "no-cards" },
+        _react2.default.createElement(
+            "p",
+            null,
+            "You have no cards to study in this deck right now. Hurray!"
+        )
+    );
+    if (card) {
+        body = _react2.default.createElement(
+            "div",
+            { className: "study-card" },
+            _react2.default.createElement(
+                "div",
+                { className: showBack ? "front hide" : "front" },
+                _react2.default.createElement(
+                    "div",
+                    null,
+                    _react2.default.createElement(
+                        "p",
+                        null,
+                        card.front
+                    )
+                ),
+                _react2.default.createElement(
+                    "button",
+                    { onClick: onFlip },
+                    "Flip"
+                )
+            ),
+            _react2.default.createElement(
+                "div",
+                { className: showBack ? "back" : "back hide" },
+                _react2.default.createElement(
+                    "div",
+                    null,
+                    _react2.default.createElement(
+                        "p",
+                        null,
+                        card.back ? card.back : "No back in this card"
+                    )
+                ),
+                _react2.default.createElement(
+                    "p",
+                    null,
+                    "How did you do?"
+                ),
+                _react2.default.createElement(
+                    "p",
+                    null,
+                    _react2.default.createElement(
+                        "button",
+                        { onClick: function onClick(e) {
+                                return onStudied(card.id, Math.max(card.score - 1, 1));
+                            } },
+                        " Poorly "
+                    ),
+                    _react2.default.createElement(
+                        "button",
+                        { onClick: function onClick(e) {
+                                return onStudied(card.id, card.score);
+                            } },
+                        " Okay "
+                    ),
+                    _react2.default.createElement(
+                        "button",
+                        { onClick: function onClick(e) {
+                                return onStudied(card.id, Math.min(card.score + 1, 3));
+                            } },
+                        " Great! "
+                    )
+                )
+            )
+        );
+    }
+
+    return _react2.default.createElement(
+        "div",
+        { className: "modal study-modal" },
+        _react2.default.createElement(
+            _reactRouter.Link,
+            { className: "btn close", to: "/deck/" + deckId },
+            "×"
+        ),
+        body
+    );
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(StudyModal);
+
+},{"../actions":272,"react":257,"react-redux":6,"react-router":52}],281:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28408,7 +28563,7 @@ var Toolbar = function Toolbar(_ref) {
 
 exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(Toolbar);
 
-},{"../actions":272,"react":257,"react-redux":6,"react-router":52}],281:[function(require,module,exports){
+},{"../actions":272,"react":257,"react-redux":6,"react-router":52}],282:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28470,7 +28625,7 @@ var Cards = function Cards(_ref4) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps)(Cards);
 
-},{"./Card":275,"fuzzysearch":2,"react":257,"react-redux":6}],282:[function(require,module,exports){
+},{"./Card":275,"fuzzysearch":2,"react":257,"react-redux":6}],283:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28487,7 +28642,7 @@ var set = exports.set = function set(state, props) {
 	localStorage.setItem('state', JSON.stringify(toSave));
 };
 
-},{}],283:[function(require,module,exports){
+},{}],284:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28497,6 +28652,15 @@ Object.defineProperty(exports, "__esModule", {
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 // These are reducers - they take an action and change the state
+
+var showBack = exports.showBack = function showBack(state, action) {
+    switch (action.type) {
+        case "SHOW_BACK":
+            return action.data || false;
+        default:
+            return state || false;
+    }
+};
 
 // Sub-reducer for card filter
 var cardFilter = exports.cardFilter = function cardFilter(state, action) {

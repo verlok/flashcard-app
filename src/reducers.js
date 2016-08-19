@@ -1,5 +1,14 @@
 // These are reducers - they take an action and change the state
 
+export const showBack = (state, action) => {
+    switch (action.type) {
+        case "SHOW_BACK":
+            return action.data || false;
+        default:
+            return state || false;
+    }
+};
+
 // Sub-reducer for card filter
 export const cardFilter = (state, action) => {
     switch (action.type) {
